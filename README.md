@@ -44,3 +44,13 @@ n8n · Groq Chat Model · OpenWeatherMap · HTTP Request · ExchangeRate-API · 
 * Exchange rates follow the API’s update schedule, not live market pricing.
 * Simple Memory provides session context, not permanent chat storage.
 * Currency arithmetic is currently handled by the AI model; a dedicated calculation step is a future improvement.
+
+## Setup
+
+1. Download `weather-currency-assistant.json` from this repository.
+2. Import the file into n8n.
+3. Configure your own Groq and OpenWeatherMap credentials.
+4. In the HTTP Request node, replace `YOUR_API_KEY` in the URL with your ExchangeRate-API key. Set Authentication to None.
+5. Open Chat and try one of the example requests.
+
+You will need your own API keys. Simple Memory keeps recent conversation context and is not permanent storage.
