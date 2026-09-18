@@ -11,6 +11,10 @@ I built this project to practice AI tool selection, API integration, and convers
 * Converts amounts between supported currencies.
 * Uses Simple Memory to understand follow-up questions within a chat session.
 
+## Workflow preview
+
+![n8n weather and currency assistant workflow](workflow.png.png)
+
 ## How it works
 
 The Chat Trigger receives a message. An AI Agent connected to a Groq Chat Model selects the relevant tool, retrieves the data, and writes a short response.
