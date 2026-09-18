@@ -1,0 +1,187 @@
+{
+  "name": "Project 1: AI Weather & Currency Assistant",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a helpful weather and currency assistant.\n\nReply in the user's language. Use Roman Urdu when the user writes in Roman Urdu. Keep answers short and clear.\n\nWEATHER\n- Use OpenWeatherMap for current weather questions.\n- Identify the city from the user's message or recent conversation.\n- Ask for clarification if the location is unclear.\n- Report only values returned by the tool, with their correct units.\n- Do not guess dates. Omit the observation date unless the API timestamp has been reliably converted.\n- Do not present current weather as a future forecast.\n\nCURRENCY\n- Use the exchange-rate tool for exchange rates and conversions.\n- Identify the amount, source currency, and target currency.\n- Pass only a three-letter currency code, such as PKR or USD, as base_currency. Never include an amount in that field.\n- If required details are missing or unclear, ask the user.\n- For the latest-rates response, calculate:\n  converted amount = amount × conversion_rates[target currency]\n- Round the final amount to two decimal places.\n- Mention both currencies and the rate used.\n- Use time_last_update_utc if mentioning when the rate was updated.\n- Describe rates as the latest available API rates, not live market rates.\n\nMEMORY AND ERRORS\n- Use recent conversation to understand follow-up questions.\n- Fetch fresh tool data when the user asks for current information.\n- If a tool fails or data is missing, explain briefly. Never invent a result.\nFor weather replies in Roman Urdu, use these simple labels:\n- Temperature\n- Mehsoos hone wala temperature\n- Hawa ki raftaar\n- Nami\n- Mausam\n\nUse natural, easy-to-understand wording. For example, translate \"clear sky\" as \"Saaf aasman\"."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -608,
+        48
+      ],
+      "id": "0ffefede-475a-48e3-9e3c-084b5e3ded89",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-20b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -736,
+        288
+      ],
+      "id": "3fc857c4-9872-4d80-a340-3e003b374a64",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "CyQkygUjsCS9k7Hu",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "public": true,
+        "options": {
+          "customCss": ":root {\n  /* Colors */\n  --chat--color--primary: #e74266;\n  --chat--color--primary-shade-50: #db4061;\n  --chat--color--primary--shade-100: #cf3c5c;\n  --chat--color--secondary: #20b69e;\n  --chat--color-secondary-shade-50: #1ca08a;\n  --chat--color-white: #fff;\n  --chat--color-light: #f2f4f8;\n  --chat--color-light-shade-50: #e6e9f1;\n  --chat--color-light-shade-100: #c2c5cc;\n  --chat--color-medium: #d2d4d9;\n  --chat--color-dark: #101330;\n  --chat--color-disabled: #d2d4d9;\n  --chat--color-typing: #404040;\n\n  /* Base Layout */\n  --chat--spacing: 1rem;\n  --chat--border-radius: 0.25rem;\n  --chat--transition-duration: 0.15s;\n  --chat--font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;\n\n  /* Window Dimensions */\n  --chat--window--width: 400px;\n  --chat--window--height: 600px;\n  --chat--window--bottom: var(--chat--spacing);\n  --chat--window--right: var(--chat--spacing);\n  --chat--window--z-index: 9999;\n  --chat--window--border: 1px solid var(--chat--color-light-shade-50);\n  --chat--window--border-radius: var(--chat--border-radius);\n  --chat--window--margin-bottom: var(--chat--spacing);\n\n  /* Header Styles */\n  --chat--header-height: auto;\n  --chat--header--padding: var(--chat--spacing);\n  --chat--header--background: var(--chat--color-dark);\n  --chat--header--color: var(--chat--color-light);\n  --chat--header--border-top: none;\n  --chat--header--border-bottom: none;\n  --chat--header--border-left: none;\n  --chat--header--border-right: none;\n  --chat--heading--font-size: 2em;\n  --chat--subtitle--font-size: inherit;\n  --chat--subtitle--line-height: 1.8;\n\n  /* Message Styles */\n  --chat--message--font-size: 1rem;\n  --chat--message--padding: var(--chat--spacing);\n  --chat--message--border-radius: var(--chat--border-radius);\n  --chat--message-line-height: 1.5;\n  --chat--message--margin-bottom: calc(var(--chat--spacing) * 1);\n  --chat--message--bot--background: var(--chat--color-white);\n  --chat--message--bot--color: var(--chat--color-dark);\n  --chat--message--bot--border: none;\n  --chat--message--user--background: var(--chat--color--secondary);\n  --chat--message--user--color: var(--chat--color-white);\n  --chat--message--user--border: none;\n  --chat--message--pre--background: rgba(0, 0, 0, 0.05);\n  --chat--messages-list--padding: var(--chat--spacing);\n\n  /* Toggle Button */\n  --chat--toggle--size: 64px;\n  --chat--toggle--width: var(--chat--toggle--size);\n  --chat--toggle--height: var(--chat--toggle--size);\n  --chat--toggle--border-radius: 50%;\n  --chat--toggle--background: var(--chat--color--primary);\n  --chat--toggle--hover--background: var(--chat--color--primary-shade-50);\n  --chat--toggle--active--background: var(--chat--color--primary--shade-100);\n  --chat--toggle--color: var(--chat--color-white);\n\n  /* Input Area */\n  --chat--textarea--height: 50px;\n  --chat--textarea--max-height: 30rem;\n  --chat--input--font-size: inherit;\n  --chat--input--border: 0;\n  --chat--input--border-radius: 0;\n  --chat--input--padding: 0.8rem;\n  --chat--input--background: var(--chat--color-white);\n  --chat--input--text-color: initial;\n  --chat--input--line-height: 1.5;\n  --chat--input--placeholder--font-size: var(--chat--input--font-size);\n  --chat--input--border-active: 0;\n  --chat--input--left--panel--width: 2rem;\n\n  /* Button Styles */\n  --chat--button--padding: calc(var(--chat--spacing) * 5 / 8) var(--chat--spacing);\n  --chat--button--border-radius: var(--chat--border-radius);\n  --chat--button--font-size: 1rem;\n  --chat--button--line-height: 1;\n  --chat--button--color--primary: var(--chat--color-light);\n  --chat--button--background--primary: var(--chat--color--secondary);\n  --chat--button--border--primary: none;\n  --chat--button--color--primary--hover: var(--chat--color-light);\n  --chat--button--background--primary--hover: var(--chat--color-secondary-shade-50);\n  --chat--button--border--primary--hover: none;\n  --chat--button--color--primary--disabled: var(--chat--color-light);\n  --chat--button--background--primary--disabled: #81bbb1;\n  --chat--button--border--primary--disabled: none;\n  --chat--button--color--secondary: var(--chat--color-light);\n  --chat--button--background--secondary: hsl(0, 0%, 58%);\n  --chat--button--border--secondary: none;\n  --chat--button--color--secondary--hover: var(--chat--color-light);\n  --chat--button--background--secondary--hover: hsl(0, 0%, 51%);\n  --chat--button--border--secondary--hover: none;\n  --chat--button--color--secondary--disabled: var(--chat--color-light);\n  --chat--button--background--secondary--disabled: hsl(0, 0%, 78%);\n  --chat--button--border--secondary--disabled: none;\n  --chat--close--button--color-hover: var(--chat--color--primary);\n\n  /* Send and File Buttons */\n  --chat--input--send--button--background: var(--chat--color-white);\n  --chat--input--send--button--color: var(--chat--color--secondary);\n  --chat--input--send--button--background-hover: var(--chat--color--primary-shade-50);\n  --chat--input--send--button--color-hover: var(--chat--color-secondary-shade-50);\n  --chat--input--file--button--background: var(--chat--color-white);\n  --chat--input--file--button--color: var(--chat--color--secondary);\n  --chat--input--file--button--background-hover: var(--chat--input--file--button--background);\n  --chat--input--file--button--color-hover: var(--chat--color-secondary-shade-50);\n  --chat--files-spacing: 0.25rem;\n\n  /* Body and Footer */\n  --chat--body--background: var(--chat--color-light);\n  --chat--footer--background: var(--chat--color-light);\n  --chat--footer--color: var(--chat--color-dark);\n}\n\n\n/* You can override any class styles, too. Right-click inspect in Chat UI to find class to override. */\n.chat-message {\n\tmax-width: 50%;\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -1008,
+        64
+      ],
+      "id": "6fa8861c-a6d3-479b-b8dc-4a1c55265451",
+      "name": "When chat message received",
+      "webhookId": "8e0931ef-0fb6-4397-aea4-1af38476e800"
+    },
+    {
+      "parameters": {
+        "cityName": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('City', ``, 'string') }}"
+      },
+      "type": "n8n-nodes-base.openWeatherMapTool",
+      "typeVersion": 1,
+      "position": [
+        -112,
+        304
+      ],
+      "id": "808f957b-9d61-404b-9b69-cb539988eceb",
+      "name": "OpenWeatherMap",
+      "notesInFlow": false,
+      "credentials": {
+        "openWeatherMapApi": {
+          "id": "cJVva3qFTIk1Yv3O",
+          "name": "OpenWeatherMap account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "This tool uses the ExchangeRate-API to fetch the latest currency exchange rates and perform accurate currency conversions. \n\nCall this tool WHENEVER the user asks for:\n- Currency exchange rates (e.g., \"What is the current rate of USD?\")\n- Currency conversion calculations (e.g., \"Convert 500 USD to PKR\" or \"How much is 50 Euros in Indian Rupees?\")\n\nKey Instructions for the AI to use this tool:\n1. CURRENCY CODES: The API strictly requires standard 3-letter ISO 4217 currency codes (e.g., USD, PKR, EUR, GBP, AED). Always extract or infer the correct 3-letter code from the user's query before making the request.\n2. PAIR CONVERSION: When converting, identify the 'Base Currency' (source) and 'Target Currency' (destination) and the 'Amount'.\n3. LIMITATIONS: The free tier of this API updates exchange rates once every 24 hours. Do not use this tool for real-time stock market prices or historical data.",
+        "url": "=https://v6.exchangerate-api.com/v6/YOUR_API_KEY/latest/{{$fromAI('base_currency')}}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": false,
+        "queryParameters": {
+          "parameters": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.5,
+      "position": [
+        -256,
+        304
+      ],
+      "id": "0d0c2239-0fc6-4b87-a24e-9dd0274c1d7c",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "khek43H1Vjxsv4bK",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        -512,
+        320
+      ],
+      "id": "cf2ab9d8-d199-40af-8394-f8c99133ac9a",
+      "name": "Simple Memory"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenWeatherMap": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "10b394c3-d175-4b8d-bf99-bd79b8fb5b38",
+  "meta": {
+    "templateCredsSetupCompleted": true
+    
+  },
+  "nodeGroups": [],
+  "id": "6gzT7uR35HB6nJ0J",
+  "tags": []
+}
